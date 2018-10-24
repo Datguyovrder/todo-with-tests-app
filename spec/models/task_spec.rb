@@ -32,13 +32,11 @@ RSpec.describe Task, type: :model do
   describe '#overdue' do
     it 'should return false if task has not passed its deadline' do
       task = Task.create(deadline: Time.now + 10.minutes)
-      task.overdue?
       expect(task.overdue?).to eq(false)
     end
 
     it 'should return true if task has passed its deadline' do
       task = Task.create(deadline: 30.minutes.ago)
-      task.overdue?
       expect(task.overdue?).to eq(true)
     end
   end
@@ -49,6 +47,12 @@ RSpec.describe Task, type: :model do
       task.increment_priority!
       expect(task.priority).to eq(7)
     end
+
+    it 'should not increment priority passed 10' do
+      task = Task.create(priority:10)
+      task.increment_priority!
+      expect(task.priority).to eq(10)
+    end
   end
   
 
@@ -57,6 +61,14 @@ RSpec.describe Task, type: :model do
       task = Task.create(priority: 4)
       task.decrement_priority!
       expect(task.priority).to eq(3)
+    end
+
+    it 'should not decrement priority lower than 1' do
+      task = Task.create(priority: 2)
+      task.decrement_priority!
+      expect(task.priority).to eq(1)
+      task.decrement_priority!
+      expect(task.priority).to eq(1)
     end
   end
 
