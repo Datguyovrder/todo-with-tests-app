@@ -62,9 +62,10 @@ RSpec.describe Task, type: :model do
 
   describe '#snooze_hour!' do
     it 'should increase deadline by 1 hour' do
-      task = Task.create(deadline: Time.now + 1.hours)
+      time = Time.now
+      task = Task.create(deadline: time + 1.hours)
       task.snooze_hour!
-      expect(task.deadline).to eq(Time.now + 2.hours)
+      expect(task.deadline).to eq(time + 2.hours)
     end
   end
 end
